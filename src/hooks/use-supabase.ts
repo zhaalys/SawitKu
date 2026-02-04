@@ -46,8 +46,7 @@ export function useBlokLahan() {
   }, [fetch]);
 
   const create = async (blok: BlokLahanInsert) => {
-    const { data, error } = await supabase
-      .from("blok_lahan")
+    const { data, error } = await (supabase.from("blok_lahan") as any)
       .insert(blok)
       .select()
       .single();
@@ -58,8 +57,7 @@ export function useBlokLahan() {
   };
 
   const update = async (id: string, updates: Partial<BlokLahan>) => {
-    const { error } = await supabase
-      .from("blok_lahan")
+    const { error } = await (supabase.from("blok_lahan") as any)
       .update(updates)
       .eq("id", id);
 
@@ -68,7 +66,9 @@ export function useBlokLahan() {
   };
 
   const remove = async (id: string) => {
-    const { error } = await supabase.from("blok_lahan").delete().eq("id", id);
+    const { error } = await (supabase.from("blok_lahan") as any)
+      .delete()
+      .eq("id", id);
 
     if (error) throw error;
     await fetch();
@@ -115,8 +115,7 @@ export function usePanen(options?: { blokId?: string; status?: string }) {
   }, [fetch]);
 
   const create = async (panen: PanenInsert) => {
-    const { data, error } = await supabase
-      .from("panen")
+    const { data, error } = await (supabase.from("panen") as any)
       .insert(panen)
       .select()
       .single();
@@ -127,8 +126,7 @@ export function usePanen(options?: { blokId?: string; status?: string }) {
   };
 
   const approve = async (id: string, userId: string) => {
-    const { error } = await supabase
-      .from("panen")
+    const { error } = await (supabase.from("panen") as any)
       .update({
         status: "approved",
         approved_by: userId,
@@ -141,8 +139,7 @@ export function usePanen(options?: { blokId?: string; status?: string }) {
   };
 
   const reject = async (id: string, catatan?: string) => {
-    const { error } = await supabase
-      .from("panen")
+    const { error } = await (supabase.from("panen") as any)
       .update({
         status: "rejected",
         catatan,
@@ -197,7 +194,7 @@ export function useInventaris(
     jumlah: number,
     keterangan?: string,
   ) => {
-    const { error } = await supabase.from("transaksi_stok").insert({
+    const { error } = await (supabase.from("transaksi_stok") as any).insert({
       inventaris_id: inventarisId,
       jenis: "masuk",
       jumlah,
@@ -213,7 +210,7 @@ export function useInventaris(
     jumlah: number,
     keterangan?: string,
   ) => {
-    const { error } = await supabase.from("transaksi_stok").insert({
+    const { error } = await (supabase.from("transaksi_stok") as any).insert({
       inventaris_id: inventarisId,
       jenis: "keluar",
       jumlah,
@@ -240,8 +237,7 @@ export function usePemupukan(status?: "dijadwalkan" | "selesai" | "tertunda") {
 
   const fetch = useCallback(async () => {
     setLoading(true);
-    let query = supabase
-      .from("pemupukan")
+    let query = (supabase.from("pemupukan") as any)
       .select("*, blok_lahan(*)")
       .order("tanggal_jadwal", { ascending: true });
 
@@ -280,8 +276,7 @@ export function useHamaPenyakit() {
 
   const fetch = useCallback(async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("hama_penyakit")
+    const { data, error } = await (supabase.from("hama_penyakit") as any)
       .select("*, blok_lahan(*)")
       .order("tanggal_laporan", { ascending: false });
 
@@ -312,8 +307,7 @@ export function useHargaTBS() {
 
   const fetch = useCallback(async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("harga_tbs")
+    const { data } = await (supabase.from("harga_tbs") as any)
       .select("*")
       .order("tanggal", { ascending: false })
       .limit(30);
@@ -335,7 +329,7 @@ export function useHargaTBS() {
     harga: number,
     sumber?: string,
   ) => {
-    const { error } = await supabase.from("harga_tbs").upsert({
+    const { error } = await (supabase.from("harga_tbs") as any).upsert({
       tanggal,
       harga_per_kg: harga,
       sumber,
@@ -364,8 +358,7 @@ export function useKeuangan(bulan?: string) {
   const fetch = useCallback(async () => {
     setLoading(true);
 
-    let query = supabase
-      .from("transaksi_keuangan")
+    let query = (supabase.from("transaksi_keuangan") as any)
       .select("*, kategori_keuangan(*)")
       .order("tanggal", { ascending: false });
 
@@ -380,12 +373,12 @@ export function useKeuangan(bulan?: string) {
 
     // Calculate summary
     const pendapatan = (data || [])
-      .filter((t) => t.jenis === "pendapatan")
-      .reduce((sum, t) => sum + t.jumlah, 0);
+      .filter((t: any) => t.jenis === "pendapatan")
+      .reduce((sum: any, t: any) => sum + t.jumlah, 0);
 
     const pengeluaran = (data || [])
-      .filter((t) => t.jenis === "pengeluaran")
-      .reduce((sum, t) => sum + t.jumlah, 0);
+      .filter((t: any) => t.jenis === "pengeluaran")
+      .reduce((sum: any, t: any) => sum + t.jumlah, 0);
 
     setSummary({
       pendapatan,
@@ -415,14 +408,13 @@ export function useNotifikasi() {
 
   const fetch = useCallback(async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("notifikasi")
+    const { data } = await (supabase.from("notifikasi") as any)
       .select("*")
       .order("created_at", { ascending: false })
       .limit(20);
 
     setData(data || []);
-    setUnreadCount((data || []).filter((n) => !n.dibaca).length);
+    setUnreadCount((data || []).filter((n: any) => !n.dibaca).length);
     setLoading(false);
   }, []);
 
@@ -432,13 +424,14 @@ export function useNotifikasi() {
   }, [fetch]);
 
   const markAsRead = async (id: string) => {
-    await supabase.from("notifikasi").update({ dibaca: true }).eq("id", id);
+    await (supabase.from("notifikasi") as any)
+      .update({ dibaca: true })
+      .eq("id", id);
     await fetch();
   };
 
   const markAllAsRead = async () => {
-    await supabase
-      .from("notifikasi")
+    await (supabase.from("notifikasi") as any)
       .update({ dibaca: true })
       .eq("dibaca", false);
     await fetch();
@@ -482,31 +475,33 @@ export function useDashboardStats() {
 
     // Get current month TBS production
     const currentMonth = new Date().toISOString().slice(0, 7);
-    const { data: panenData } = await supabase
-      .from("panen")
+    const { data: panenData } = await (supabase.from("panen") as any)
       .select("berat_kg")
       .eq("status", "approved")
       .gte("tanggal", `${currentMonth}-01`);
 
-    const totalTBS = (panenData || []).reduce((sum, p) => sum + p.berat_kg, 0);
+    const totalTBS = (panenData || []).reduce(
+      (sum: any, p: any) => sum + p.berat_kg,
+      0,
+    );
 
     // Get blok lahan stats
-    const { data: blokData } = await supabase
-      .from("blok_lahan")
-      .select("luas_hektar, jumlah_pohon, status");
+    const { data: blokData } = await (
+      supabase.from("blok_lahan") as any
+    ).select("luas_hektar, jumlah_pohon, status");
 
     const luasLahan = (blokData || []).reduce(
-      (sum, b) => sum + b.luas_hektar,
+      (sum: any, b: any) => sum + b.luas_hektar,
       0,
     );
     const jumlahPohon = (blokData || []).reduce(
-      (sum, b) => sum + (b.jumlah_pohon || 0),
+      (sum: any, b: any) => sum + (b.jumlah_pohon || 0),
       0,
     );
 
     // Block status distribution
     const statusCounts: Record<string, number> = {};
-    (blokData || []).forEach((b) => {
+    (blokData || []).forEach((b: any) => {
       statusCounts[b.status] = (statusCounts[b.status] || 0) + 1;
     });
 
@@ -528,40 +523,41 @@ export function useDashboardStats() {
     );
 
     // Get pupuk stock
-    const { data: inventarisData } = await supabase
-      .from("inventaris")
+    const { data: inventarisData } = await (supabase.from("inventaris") as any)
       .select("stok_saat_ini, stok_minimum, kategori_inventaris!inner(jenis)")
       .eq("kategori_inventaris.jenis", "pupuk");
 
     const totalStok = (inventarisData || []).reduce(
-      (sum, i) => sum + i.stok_saat_ini,
+      (sum: any, i: any) => sum + i.stok_saat_ini,
       0,
     );
     const totalMinimum = (inventarisData || []).reduce(
-      (sum, i) => sum + i.stok_minimum,
+      (sum: any, i: any) => sum + i.stok_minimum,
       0,
     );
     const stokPercentage =
       totalMinimum > 0 ? (totalStok / totalMinimum) * 100 : 100;
 
     // Get profit MTD
-    const { data: keuanganData } = await supabase
-      .from("transaksi_keuangan")
+    const { data: keuanganData } = await (
+      supabase.from("transaksi_keuangan") as any
+    )
       .select("jenis, jumlah")
       .gte("tanggal", `${currentMonth}-01`);
 
     const pendapatan = (keuanganData || [])
-      .filter((k) => k.jenis === "pendapatan")
-      .reduce((sum, k) => sum + k.jumlah, 0);
+      .filter((k: any) => k.jenis === "pendapatan")
+      .reduce((sum: any, k: any) => sum + k.jumlah, 0);
     const pengeluaran = (keuanganData || [])
-      .filter((k) => k.jenis === "pengeluaran")
-      .reduce((sum, k) => sum + k.jumlah, 0);
+      .filter((k: any) => k.jenis === "pengeluaran")
+      .reduce((sum: any, k: any) => sum + k.jumlah, 0);
     const profit = pendapatan - pengeluaran;
     const margin = pendapatan > 0 ? (profit / pendapatan) * 100 : 0;
 
     // Get monthly production trend (last 12 months)
-    const { data: produksiData } = await supabase
-      .from("v_produksi_bulanan")
+    const { data: produksiData } = await (
+      supabase.from("v_produksi_bulanan") as any
+    )
       .select("*")
       .limit(12);
 
@@ -580,7 +576,7 @@ export function useDashboardStats() {
       "Des",
     ];
     setProductionData(
-      (produksiData || []).reverse().map((p) => ({
+      (produksiData || []).reverse().map((p: any) => ({
         bulan: months[new Date(p.bulan).getMonth()],
         produksi: p.total_berat,
       })),
