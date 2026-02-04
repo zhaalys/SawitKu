@@ -135,8 +135,8 @@ export default function HargaTBSPage() {
                   tickFormatter={(v) => `${v}`}
                 />
                 <Tooltip
-                  formatter={(value: number) => [
-                    formatCurrency(value),
+                  formatter={(value: any) => [
+                    formatCurrency(value ?? 0),
                     "Harga/kg",
                   ]}
                   contentStyle={{
