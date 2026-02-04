@@ -134,11 +134,11 @@ export default function LahanPage() {
         luas_hektar: parseFloat(formData.luas_hektar),
         jumlah_pohon: formData.jumlah_pohon
           ? parseInt(formData.jumlah_pohon)
-          : null,
+          : undefined,
         tahun_tanam: formData.tahun_tanam
           ? parseInt(formData.tahun_tanam)
-          : null,
-        jenis_bibit: formData.jenis_bibit || null,
+          : undefined,
+        jenis_bibit: formData.jenis_bibit || undefined,
         status: formData.status as
           | "produktif"
           | "pemupukan"
