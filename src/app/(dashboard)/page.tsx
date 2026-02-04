@@ -288,8 +288,8 @@ export default function DashboardPage() {
                         border: "1px solid hsl(var(--border))",
                         borderRadius: "8px",
                       }}
-                      formatter={(value: number) => [
-                        `${value.toLocaleString("id-ID")} kg`,
+                      formatter={(value: any) => [
+                        `${(value ?? 0).toLocaleString("id-ID")} kg`,
                         "Produksi",
                       ]}
                     />
