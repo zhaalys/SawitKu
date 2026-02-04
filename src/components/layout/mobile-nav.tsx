@@ -121,19 +121,19 @@ export function MobileNav() {
               >
                 <action.icon className="size-5" />
               </div>
-              <span className="text-[10px] font-bold text-zinc-100 uppercase tracking-tight">
+              <span className="text-[9px] font-bold text-zinc-100 uppercase tracking-tight">
                 {action.label}
               </span>
             </Link>
           ))}
         </div>
-        <div className="w-0.5 h-6 bg-gradient-to-t from-green-500/50 to-transparent" />
+        <div className="w-0.5 h-4 bg-gradient-to-t from-green-500/50 to-transparent" />
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden px-2 pb-3">
-        <div className="relative flex items-center justify-between bg-zinc-950/95 dark:bg-black/95 backdrop-blur-xl border border-white/5 shadow-[0_-8px_40px_rgb(0,0,0,0.5)] rounded-[24px] h-16 px-1">
+      <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden px-1 pb-1">
+        <div className="relative flex items-center justify-between bg-zinc-950/95 dark:bg-black/95 backdrop-blur-xl border border-white/5 shadow-[0_-8px_40px_rgb(0,0,0,0.5)] rounded-[16px] h-12 px-0.5">
           {/* Left Side Items */}
-          <div className="flex flex-1 justify-around items-center px-1">
+          <div className="flex flex-1 justify-around items-center px-0.5">
             {leftItems.map((item) => {
               const isActive = pathname === item.href;
               return (
@@ -149,11 +149,11 @@ export function MobileNav() {
                 >
                   <item.icon
                     className={cn(
-                      "size-5",
+                      "size-4.5",
                       isActive ? "stroke-[3px]" : "stroke-[1.5px]",
                     )}
                   />
-                  <span className="text-[7.5px] font-[900] uppercase tracking-[-0.05em] truncate w-full text-center leading-none mt-0.5">
+                  <span className="text-[7px] font-[900] uppercase tracking-[-0.05em] truncate w-full text-center leading-none mt-0.5">
                     {item.label}
                   </span>
                 </Link>
@@ -162,7 +162,7 @@ export function MobileNav() {
           </div>
 
           {/* Floating Center Button */}
-          <div className="relative -mt-9 mx-0.5">
+          <div className="relative -mt-7 mx-0.5">
             <div
               className={cn(
                 "absolute inset-0 bg-green-500/40 blur-2xl rounded-full transition-all duration-500",
@@ -172,13 +172,13 @@ export function MobileNav() {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className={cn(
-                "relative flex items-center justify-center size-13.5 rounded-full shadow-[0_0_20px_rgb(34,197,94,0.6)] border-[3.5px] border-zinc-950 transition-all duration-500 active:scale-90 overflow-hidden",
+                "relative flex items-center justify-center size-12 rounded-full shadow-[0_0_20px_rgb(34,197,94,0.6)] border-[3.5px] border-zinc-950 transition-all duration-500 active:scale-90 overflow-hidden",
                 isOpen
                   ? "bg-zinc-100 text-black rotate-[135deg]"
                   : "bg-green-500 text-black",
               )}
             >
-              <Plus className="size-7.5 stroke-[3.5px]" />
+              <Plus className="size-6.5 stroke-[3.5px]" />
               {!isOpen && (
                 <div className="absolute inset-x-0 top-0 h-1/2 bg-white/20 pointer-events-none" />
               )}
@@ -202,11 +202,11 @@ export function MobileNav() {
                 >
                   <item.icon
                     className={cn(
-                      "size-5",
+                      "size-4.5",
                       isActive ? "stroke-[3px]" : "stroke-[1.5px]",
                     )}
                   />
-                  <span className="text-[7.5px] font-[900] uppercase tracking-[-0.05em] truncate w-full text-center leading-none mt-0.5">
+                  <span className="text-[7px] font-[900] uppercase tracking-[-0.05em] truncate w-full text-center leading-none mt-0.5">
                     {item.label}
                   </span>
                 </Link>

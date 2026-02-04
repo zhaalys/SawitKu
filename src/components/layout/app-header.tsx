@@ -30,10 +30,24 @@ export function AppHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
-      <div className="hidden md:flex items-center gap-2">
-        <SidebarTrigger className="-ml-1" />
-        <Separator orientation="vertical" className="mr-2 h-4" />
+    <header className="sticky top-0 z-50 flex h-14 sm:h-16 shrink-0 items-center justify-between gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-3 sm:px-4">
+      <div className="flex items-center gap-2">
+        {/* Mobile Logo */}
+        <Link href="/" className="md:hidden flex items-center gap-2 mr-2">
+          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-white dark:bg-zinc-800 shadow-sm overflow-hidden p-1 border border-sidebar-border">
+            <img
+              src="/logo_sawit.png"
+              alt="SawitKu"
+              className="size-full object-contain"
+            />
+          </div>
+          <span className="font-bold text-sm tracking-tight">SawitKu</span>
+        </Link>
+
+        <div className="hidden md:flex items-center gap-2">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+        </div>
       </div>
 
       {/* Search */}
