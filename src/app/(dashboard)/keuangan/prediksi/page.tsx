@@ -117,8 +117,8 @@ export default function PrediksiPanenPage() {
                   tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
                 />
                 <Tooltip
-                  formatter={(value: number) => [
-                    `${formatNumber(value)} kg`,
+                  formatter={(value: any) => [
+                    `${formatNumber(value ?? 0)} kg`,
                     "Estimasi",
                   ]}
                   contentStyle={{
