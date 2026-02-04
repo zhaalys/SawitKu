@@ -13,6 +13,7 @@ import {
   Package,
   ClipboardList,
   X,
+  Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -69,6 +70,12 @@ const quickActions = [
     href: "/inventaris/pupuk",
     color: "bg-purple-500",
   },
+  {
+    label: "Pengaturan",
+    icon: Settings,
+    href: "/pengaturan",
+    color: "bg-zinc-600",
+  },
 ];
 
 export function MobileNav() {
@@ -98,7 +105,7 @@ export function MobileNav() {
             : "translate-y-20 opacity-0 scale-75 pointer-events-none",
         )}
       >
-        <div className="grid grid-cols-2 gap-3 p-4 bg-zinc-900/90 border border-white/10 rounded-3xl shadow-2xl backdrop-blur-xl max-w-[280px]">
+        <div className="grid grid-cols-3 gap-3 p-4 bg-zinc-900/90 border border-white/10 rounded-3xl shadow-2xl backdrop-blur-xl max-w-[320px]">
           {quickActions.map((action, i) => (
             <Link
               key={i}
