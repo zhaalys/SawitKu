@@ -19,10 +19,15 @@ import { User as UserIcon, Settings, LogOut } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { useNotifikasi } from "@/hooks/use-supabase";
+import { formatDistanceToNow } from "date-fns";
+import { id as localeId } from "date-fns/locale";
 
 export function AppHeader() {
   const router = useRouter();
   const supabase = createClient();
+  const { data: notifications, unreadCount, markAsRead } = useNotifikasi();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -66,35 +71,75 @@ export function AppHeader() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="relative">
               <Bell className="size-5" />
-              <Badge className="absolute -top-1 -right-1 size-5 rounded-full p-0 text-[10px] flex items-center justify-center">
-                3
-              </Badge>
+              {unreadCount > 0 && (
+                <Badge className="absolute -top-1 -right-1 size-5 rounded-full p-0 text-[10px] flex items-center justify-center bg-green-500 hover:bg-green-600">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </Badge>
+              )}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-80">
-            <DropdownMenuLabel>Notifikasi</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="flex flex-col items-start gap-1 py-3">
-              <span className="font-medium">Stok Pupuk Menipis</span>
-              <span className="text-xs text-muted-foreground">
-                Pupuk NPK tersisa 15%. Segera lakukan pemesanan.
-              </span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex flex-col items-start gap-1 py-3">
-              <span className="font-medium">Jadwal Pemupukan</span>
-              <span className="text-xs text-muted-foreground">
-                Blok A-1 sudah waktunya dipupuk (3 hari lagi)
-              </span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex flex-col items-start gap-1 py-3">
-              <span className="font-medium">Data Panen Baru</span>
-              <span className="text-xs text-muted-foreground">
-                Mandor Ahmad menginput panen 500kg dari Blok B-2
-              </span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-center text-primary">
-              Lihat semua notifikasi
+          <DropdownMenuContent align="end" className="w-80 p-0">
+            <DropdownMenuLabel className="p-4 font-bold flex items-center justify-between">
+              <span>Notifikasi</span>
+              {unreadCount > 0 && (
+                <span className="text-[10px] bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-0.5 rounded-full">
+                  {unreadCount} Baru
+                </span>
+              )}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator className="m-0" />
+            <div className="max-h-[300px] overflow-y-auto">
+              {notifications.length > 0 ? (
+                notifications.slice(0, 5).map((n) => (
+                  <DropdownMenuItem
+                    key={n.id}
+                    className={cn(
+                      "flex flex-col items-start gap-1 p-4 cursor-pointer focus:bg-muted/50 border-b last:border-0",
+                      !n.dibaca && "bg-green-500/5 dark:bg-green-500/10",
+                    )}
+                    onClick={() => {
+                      if (!n.dibaca) markAsRead(n.id);
+                      // Navigate if there's a payload link, otherwise just show
+                    }}
+                  >
+                    <div className="flex items-center justify-between w-full gap-2">
+                      <span
+                        className={cn(
+                          "font-semibold text-sm",
+                          !n.dibaca && "text-green-600 dark:text-green-400",
+                        )}
+                      >
+                        {n.judul}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground whitespace-nowrap">
+                        {formatDistanceToNow(new Date(n.created_at), {
+                          addSuffix: true,
+                          locale: localeId,
+                        })}
+                      </span>
+                    </div>
+                    <span className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                      {n.pesan}
+                    </span>
+                  </DropdownMenuItem>
+                ))
+              ) : (
+                <div className="p-8 text-center">
+                  <Bell className="size-8 mx-auto text-muted-foreground/30 mb-2" />
+                  <p className="text-sm text-muted-foreground">
+                    Tidak ada notifikasi
+                  </p>
+                </div>
+              )}
+            </div>
+            <DropdownMenuSeparator className="m-0" />
+            <DropdownMenuItem asChild>
+              <Link
+                href="/notifikasi"
+                className="w-full text-center py-3 text-sm font-medium text-green-600 dark:text-green-400 cursor-pointer hover:bg-muted/50 transition-colors block"
+              >
+                Lihat semua notifikasi
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
